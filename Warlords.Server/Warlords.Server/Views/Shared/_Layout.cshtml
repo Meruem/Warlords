@@ -1,0 +1,27 @@
+﻿<!DOCTYPE html>
+<html ng-app="warlordsApp">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/linq")
+    @Scripts.Render("~/bundles/signalR")
+@* ReSharper disable Html.PathError *@
+    <script src="~/signalr/hubs" type="text/javascript"></script>
+@* ReSharper restore Html.PathError *@
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/angular")
+    <script>
+        var currentUserName = "@User.Identity.Name";
+    </script>
+
+    @Scripts.Render("~/bundles/warlords")
+</head>
+<body>
+    @RenderBody()
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>

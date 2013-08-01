@@ -1,0 +1,35 @@
+﻿@{
+    ViewBag.Title = "Game";
+}
+
+<h2>Game</h2>
+
+Current game: </br>
+Id: {{currentGame.Id}} </br>
+Owner: {{currentGame.Owner.Name}} </br>
+Playing: {{currentGame.IsStarted}} </br>
+Owners: 
+<ul>
+    <li ng-repeat="player in currentGame.Owners">
+        {{player.Name}}
+    </li>
+</ul>
+<button ng-click="endGame()">End</button>
+
+<div>
+    <ul>
+        <li ng-repeat="zone in currentGameData.Battlefield.Zones">
+            Owner: {{zone.OwnerName}} </br>
+            Zone type: {{zone.Type}} </br>
+            <ul>
+                <li ng-repeat="building in zone.Buildings">
+                    Building: {{building.Prototype.Name}}
+                </li>
+                <li ng-repeat="creature in zone.Creatures">
+                    Creature: {{creature.Prototype.Name}}
+                </li>
+            </ul>
+        </li>
+    </ul>
+</div>
+

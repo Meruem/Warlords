@@ -1,0 +1,28 @@
+﻿@{
+    ViewBag.Title = "LogOnView";
+}
+
+<h2>LogOnView</h2>
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Log in Form</legend>
+        <ol>
+            <li>
+                @Html.Label("User name")
+                @Html.TextBox("userName")
+            </li>
+            <li>
+                @Html.Label("Password")
+                @Html.Password("password")
+            </li>
+        </ol>
+        <input type="submit" value="Log in" />
+    </fieldset>
+    <p>
+        @Html.ActionLink("Register", "Register") if you don't have an account.
+    </p>
+}

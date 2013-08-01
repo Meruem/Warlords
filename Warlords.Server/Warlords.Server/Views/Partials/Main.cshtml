@@ -1,0 +1,46 @@
+﻿@{
+    ViewBag.Title = "Main";
+}
+
+<h2>Lobby</h2>
+<p>
+    Logged as: {{currentUserName}}
+</p>
+<input type="button" ng-click="createGame()" value="Create Game" />
+
+<div ng-show="currentGame.Id != null">
+    <p>
+        Current game: </br>
+        Id: {{currentGame.Id}} </br>
+        Owner: {{currentGame.Owner.Name}} </br>
+        Playing: {{currentGame.IsStarted}} </br>
+        Owners: 
+        <ul>
+            <li ng-repeat="player in currentGame.Owners">
+                {{player.Name}}
+            </li>
+        </ul>
+        <button ng-click="leaveGame()">Leave</button>
+        <button ng-show="currentGame.Owners.length == 2 && currentGame.IsStarted == false" ng-click="startGame()">Start</button>
+    </p>
+</div>
+<p>
+    Active players:
+    <ul>
+        <li ng-repeat="player in players">
+            {{player.Name}}
+        </li>
+    </ul>
+</p>
+<p>
+    Active games:
+    <ul>
+        <li ng-repeat="game in games">
+            {{game.Owner.Name}} [{{game.Owners.length}}] <span ng-show="game.IsStarted">Playing</span> 
+            <input ng-show="canJoinGame(game.Id)" type="button" ng-click="joinGame(game.Id)" value="Join"/>
+        </li>
+    </ul>
+</p>
+<div ng-show="error">
+    Error: {{error}}
+</div>
