@@ -234,7 +234,6 @@
     <Compile Include="Infrastructure\WarlordsHub.cs" />
     <Compile Include="Hubs\MessageHub.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RequiresPostSharp.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
