@@ -79,6 +79,7 @@ namespace Warlords.Server.App_Start
             kernel.Bind(typeof(IRepository<>)).To(typeof(Repository<>));
             kernel.Bind<IEventStore>().To<EventStore>().InSingletonScope();
             kernel.Bind<IClientSender>().To<SignalRClientSender>();
+            kernel.Bind<IEventScheduler>().To<AsyncEventScheduler>().InSingletonScope();
         }        
     }
 }

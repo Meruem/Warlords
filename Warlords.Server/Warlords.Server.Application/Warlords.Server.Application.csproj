@@ -97,10 +97,12 @@
   <ItemGroup>
     <Compile Include="EventHandlers\ClientInteraction\GameCreatedEventHandler.cs" />
     <Compile Include="EventHandlers\ClientInteraction\PlayerJoinedEventHandler.cs" />
+    <Compile Include="Infrastructure\AsyncEventScheduler.cs" />
     <Compile Include="Infrastructure\EventStore.cs" />
     <Compile Include="Infrastructure\HandlerFactory.cs" />
     <Compile Include="Infrastructure\HubService.cs" />
     <Compile Include="Infrastructure\IClientSender.cs" />
+    <Compile Include="Infrastructure\IEventScheduler.cs" />
     <Compile Include="Infrastructure\IEventStore.cs" />
     <Compile Include="Infrastructure\IHandlerFactory.cs" />
     <Compile Include="Infrastructure\IHandles.cs" />
@@ -108,6 +110,7 @@
     <Compile Include="Infrastructure\IRepository.cs" />
     <Compile Include="CommandHandlers\CreateGameHandler.cs" />
     <Compile Include="CommandHandlers\JoinPlayerInLobbyHandler.cs" />
+    <Compile Include="Infrastructure\SyncEventScheduler.cs" />
     <Compile Include="Messages\In\CreateGameMessage.cs" />
     <Compile Include="Messages\In\JoinPlayerInLobbyMessage.cs" />
     <Compile Include="Messages\Out\GameCreatedMessage.cs" />

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
-using System.Threading.Tasks;
 using Warlords.Server.Common;
 using Warlords.Server.Common.Aspects;
 using Warlords.Server.Domain.Infrastructure;
@@ -10,10 +9,12 @@ namespace Warlords.Server.Application.Infrastructure
     public class HubService : IHubService
     {
         private readonly IHandlerFactory _handlerFactory;
+        private readonly IEventScheduler _eventScheduler;
 
-        public HubService(IHandlerFactory handlerFactory)
+        public HubService(IHandlerFactory handlerFactory, IEventScheduler eventScheduler)
         {
             _handlerFactory = handlerFactory;
+            _eventScheduler = eventScheduler;
         }
 
         public void Send<TCommand>(TCommand command) where TCommand : Message
@@ -22,7 +23,7 @@ namespace Warlords.Server.Application.Infrastructure
         }
 
         [Log]
-        public void Send(Type commandType, object command)
+        public void Send(Type commandType, Message command)
         {
             Contract.Assert(command as Message != null);
             var handlers = _handlerFactory.GetHandlerMethodsForMessage(commandType);
@@ -38,11 +39,15 @@ namespace Warlords.Server.Application.Infrastructure
         }
 
         [Log]
-        public void Publish(Type eventType, object @event)
+        public void Publish(Type eventType, Message @event)
         {
             Contract.Assert(@event as Message != null);
             var handlers = _handlerFactory.GetHandlerMethodsForMessage(eventType);
-            Parallel.ForEach(handlers, handler => handler.Invoke(@event));
+            foreach (var handler in handlers)
+            {
+                Action<Message> tempHandler = handler;
+                _eventScheduler.ScheduleJob(() => tempHandler.Invoke(@event));
+            }
         }
     }
 }

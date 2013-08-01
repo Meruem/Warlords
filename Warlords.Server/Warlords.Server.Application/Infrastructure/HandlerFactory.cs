@@ -4,35 +4,43 @@ using Ninject;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Warlords.Server.Common;
 
 namespace Warlords.Server.Application.Infrastructure
 {
     public class HandlerFactory : IHandlerFactory
     {
-        private readonly Dictionary<Type, IList<Action<object>>> _handlers;
+        private readonly Dictionary<Type, IList<Action<Message>>> _handlers;
         private readonly IKernel _kernel;
+        private readonly IList<Action<Message>> _generalHandlers; 
  
         public HandlerFactory(IKernel kernel)
         {
             _kernel = kernel;
-            _handlers = new Dictionary<Type, IList<Action<object>>>();
+            _handlers = new Dictionary<Type, IList<Action<Message>>>();
+            _generalHandlers = new List<Action<Message>>();
 
             SearchForHandlers();
         }
 
-        public void AddSubsriber(Type messageType, Action<object> action)
+        public void AddSubsriber(Type messageType, Action<Message> action)
         {
             Contract.Requires(action != null);
             Contract.Requires(messageType != null);
 
             if (!_handlers.ContainsKey(messageType))
             {
-                _handlers[messageType] = new List<Action<object>>();
+                _handlers[messageType] = new List<Action<Message>>();
             }
 
             _handlers[messageType].Add(action);
         }
 
+        public void AddSubscriberForEveryThing(Action<Message> action)
+        {
+            Contract.Requires(action != null);
+            _generalHandlers.Add(action);
+        }
 
         private void SearchForHandlers()
         {
@@ -45,7 +53,7 @@ namespace Warlords.Server.Application.Infrastructure
                 {
                     if (!_handlers.ContainsKey(messageType))
                     {
-                        _handlers[messageType] = new List<Action<object>>();
+                        _handlers[messageType] = new List<Action<Message>>();
                     }
 
                     Type tempMessageType = messageType;
@@ -54,7 +62,7 @@ namespace Warlords.Server.Application.Infrastructure
                     {
                         var handler = _kernel.Get(tempHandlerType);
                         MethodInfo method = handler.GetType().GetMethod("Handle", new[] { tempMessageType });
-                        method.Invoke(handler, new[] { message });
+                        method.Invoke(handler, new object[] { message });
                     });
                 }
             }
@@ -77,11 +85,16 @@ namespace Warlords.Server.Application.Infrastructure
             return concreteTypes;
         }
 
-        public IEnumerable<Action<object>> GetHandlerMethodsForMessage(Type messageType)
+        public IEnumerable<Action<Message>> GetHandlerMethodsForMessage(Type messageType)
         {
             if (!_handlers.ContainsKey(messageType))
             {
                 yield break;
+            }
+
+            foreach (var handler in _generalHandlers)
+            {
+                yield return handler;
             }
 
             foreach (var action in _handlers[messageType])

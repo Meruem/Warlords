@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNet.SignalR;
+﻿using Microsoft.AspNet.SignalR;
 using Newtonsoft.Json;
 using System;
 using System.Diagnostics.Contracts;
@@ -27,8 +26,7 @@ namespace Warlords.Server.Hubs
             {
                 var messageObject = CreateMessageObject(message, type);
                 InjectUserSpecificInformationToMessage(messageObject);
-                Task.Factory.StartNew(() => _hubService.Send(type, messageObject));
-                //_hubService.Send(type, messageObject);
+                _hubService.Send(type, messageObject);
             }
         }
 
@@ -38,9 +36,9 @@ namespace Warlords.Server.Hubs
             return type;
         }
 
-        private object CreateMessageObject(string message, Type type)
+        private Message CreateMessageObject(string message, Type type)
         {
-            var messageObject = JsonConvert.DeserializeObject(message, type);
+            var messageObject = JsonConvert.DeserializeObject(message, type) as Message;
             Contract.Assert(messageObject != null, "Error in serialization");
             return messageObject;
         }

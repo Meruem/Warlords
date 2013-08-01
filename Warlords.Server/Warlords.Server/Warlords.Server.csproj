@@ -221,7 +221,6 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\PartialsController.cs" />
-    <Compile Include="Hubs\GameHub.cs" />
     <Compile Include="Hubs\LobbyHub.cs" />
     <Compile Include="Controllers\MainController.cs" />
     <Compile Include="Global.asax.cs">
@@ -479,7 +478,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>13954</DevelopmentServerPort>
+          <DevelopmentServerPort>44406</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost:5115/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>

@@ -84,6 +84,11 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Infrastructure\ClientSenderHelper.cs" />
+    <Compile Include="Infrastructure\MethodCallStoreDynamic.cs" />
+    <Compile Include="Infrastructure\ScenarioContextExtensions.cs" />
+    <Compile Include="Infrastructure\TestClientSender.cs" />
+    <Compile Include="Infrastructure\TestInit.cs" />
     <Compile Include="Lobby\JoinLobbySteps.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Lobby\JoinLobby.feature.cs">
