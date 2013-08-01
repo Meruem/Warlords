@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
 using System.Linq;
+using Warlords.Server.Application.Commands;
 using Warlords.Server.Application.Infrastructure;
-using Warlords.Server.Application.Messages.In;
 using Warlords.Server.Common.Aspects;
 using Warlords.Server.Domain.Models.Lobby;
 
@@ -22,16 +22,7 @@ namespace Warlords.Server.Application.CommandHandlers
         {
             var lobbyId = _lobbyRepository.GetAllIds().FirstOrDefault();
 
-            // hack :(
-            //Contract.Assert(lobbyId != null, "No lobby exists");
-
-            if (lobbyId == default(Guid)) 
-            {
-                var newLobby = new Lobby(Guid.NewGuid());
-                _lobbyRepository.Save(newLobby, -1);
-                lobbyId = newLobby.Id;
-            }
-            // hack end
+            Contract.Assert(lobbyId != null, "No lobby exists");
 
             var lobby = _lobbyRepository.GetById(lobbyId);
             Contract.Assert(lobby != null);

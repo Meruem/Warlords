@@ -47,7 +47,7 @@ namespace Warlords.Server
             logger.Debug("Bundles configuration ended");
 
             logger.Debug("Started executing startup commands");
-
+            StartCommands.PublishStartCommands();
             logger.Debug("Finished executing startup commands");
         }
     }

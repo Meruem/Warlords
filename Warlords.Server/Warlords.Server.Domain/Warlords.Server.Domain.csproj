@@ -58,6 +58,7 @@
     <CodeContractsRuntimeCheckingLevel>Full</CodeContractsRuntimeCheckingLevel>
     <CodeContractsReferenceAssembly>Build</CodeContractsReferenceAssembly>
     <CodeContractsAnalysisWarningLevel>0</CodeContractsAnalysisWarningLevel>
+    <SkipPostSharp>True</SkipPostSharp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -85,6 +86,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Events\GameCreatedEvent.cs" />
+    <Compile Include="Events\LobbyCreatedEvent.cs" />
     <Compile Include="Events\PlayerJoinedEvent.cs" />
     <Compile Include="Infrastructure\AggregateRoot.cs" />
     <Compile Include="Infrastructure\Event.cs" />

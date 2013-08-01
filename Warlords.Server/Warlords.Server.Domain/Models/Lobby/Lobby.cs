@@ -23,21 +23,14 @@ namespace Warlords.Server.Domain.Models.Lobby
         {
         }
 
-        public Lobby(Lobby originalLobby)
+        public Lobby(Guid id)
         {
-            _id = originalLobby.Id;
-            foreach (var lobbyGameInfo in originalLobby.Games)
-            {
-                _games[lobbyGameInfo.Id] = lobbyGameInfo;
-            }
-
-            _players = originalLobby.Players.Select(p => p).ToList();
+            ApplyChange(new LobbyCreatedEvent { Guid = id});
         }
 
-        public Lobby(Guid id)
-            : this()
+        public void Apply(LobbyCreatedEvent @event)
         {
-            _id = id;
+            _id = @event.Guid;
         }
 
         [Pure]

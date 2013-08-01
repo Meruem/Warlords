@@ -2,7 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using TechTalk.SpecFlow;
-using Warlords.Server.Application.Messages.In;
+using Warlords.Server.Application.Commands;
 using Warlords.Server.Domain.Events;
 using Warlords.Server.Specs.Infrastructure;
 using models = Warlords.Server.Domain.Models;

@@ -1,6 +1,6 @@
 ﻿using Ninject;
 using Warlords.Server.Application.Infrastructure;
-using Warlords.Server.Application.Messages.Out;
+using Warlords.Server.Application.OutMessages;
 using Warlords.Server.Common.Aspects;
 using Warlords.Server.Domain.Events;
 

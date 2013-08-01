@@ -95,6 +95,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommandHandlers\CreateLobbyHandler.cs" />
+    <Compile Include="Commands\CreateLobbyMessage.cs" />
     <Compile Include="EventHandlers\ClientInteraction\GameCreatedEventHandler.cs" />
     <Compile Include="EventHandlers\ClientInteraction\PlayerJoinedEventHandler.cs" />
     <Compile Include="Infrastructure\AsyncEventScheduler.cs" />
@@ -111,10 +113,10 @@
     <Compile Include="CommandHandlers\CreateGameHandler.cs" />
     <Compile Include="CommandHandlers\JoinPlayerInLobbyHandler.cs" />
     <Compile Include="Infrastructure\SyncEventScheduler.cs" />
-    <Compile Include="Messages\In\CreateGameMessage.cs" />
-    <Compile Include="Messages\In\JoinPlayerInLobbyMessage.cs" />
-    <Compile Include="Messages\Out\GameCreatedMessage.cs" />
-    <Compile Include="Messages\Out\PlayerJoinedMessage.cs" />
+    <Compile Include="Commands\CreateGameMessage.cs" />
+    <Compile Include="Commands\JoinPlayerInLobbyMessage.cs" />
+    <Compile Include="OutMessages\GameCreatedMessage.cs" />
+    <Compile Include="OutMessages\PlayerJoinedMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Infrastructure\Repository.cs" />
   </ItemGroup>

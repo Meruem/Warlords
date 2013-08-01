@@ -25,8 +25,8 @@ namespace Warlords.Server.Application.Infrastructure
 
         public void AddSubsriber(Type messageType, Action<Message> action)
         {
-            Contract.Requires(action != null);
-            Contract.Requires(messageType != null);
+            Contract.Assert(action != null);
+            Contract.Assert(messageType != null);
 
             if (!_handlers.ContainsKey(messageType))
             {
@@ -38,7 +38,7 @@ namespace Warlords.Server.Application.Infrastructure
 
         public void AddSubscriberForEveryThing(Action<Message> action)
         {
-            Contract.Requires(action != null);
+            Contract.Assert(action != null);
             _generalHandlers.Add(action);
         }
 

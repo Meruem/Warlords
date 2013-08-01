@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Diagnostics.Contracts;
 using Microsoft.AspNet.SignalR;
+using Warlords.Server.Application.Commands;
 using Warlords.Server.Application.Infrastructure;
 
 namespace Warlords.Server.App_Start
@@ -12,9 +10,9 @@ namespace Warlords.Server.App_Start
         public static void PublishStartCommands()
         {
             var hubService = GlobalHost.DependencyResolver.GetService(typeof (IHubService)) as IHubService;
-            
-            
-            //hubService.Send();
+            Contract.Assert(hubService != null);
+
+            hubService.Send(new CreateLobbyMessage());
         }
     }
 }
