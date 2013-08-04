@@ -30,6 +30,7 @@ namespace Warlords.Server.Domain.Models.Lobby
 
         public void Apply(LobbyCreatedEvent @event)
         {
+            Contract.Requires(@event != null);
             _id = @event.Guid;
         }
 
@@ -49,7 +50,6 @@ namespace Warlords.Server.Domain.Models.Lobby
         private void Apply(PlayerJoinedEvent e)
         {
             Contract.Requires(e != null);
-
             _players.Add(e.UserName);
         }
 
