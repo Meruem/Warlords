@@ -1,3 +1,4 @@
+using System.Web.Http;
 using log4net;
 using Microsoft.AspNet.SignalR;
 using Microsoft.Web.Infrastructure.DynamicModuleHelper;
@@ -6,6 +7,8 @@ using Ninject.Web.Common;
 using System;
 using System.Diagnostics.Contracts;
 using System.Web;
+using Raven.Client;
+using Raven.Client.Document;
 using Warlords.Server.Application.Infrastructure;
 using Warlords.Server.Domain.Models.Game;
 using Warlords.Server.Domain.Models.Lobby;
@@ -29,7 +32,7 @@ namespace Warlords.Server.App_Start
         public static void Start() 
         {
             _logger.Debug("Ninject Start begin.");
-            DynamicModuleUtility.RegisterModule(typeof(OnePerRequestHttpModule));
+            //DynamicModuleUtility.RegisterModule(typeof(OnePerRequestHttpModule));
             DynamicModuleUtility.RegisterModule(typeof(NinjectHttpModule));
             _bootstrapper.Initialize(CreateKernel);
             _logger.Debug("Ninject Start ended.");
@@ -56,6 +59,7 @@ namespace Warlords.Server.App_Start
             kernel.Bind<Func<IKernel>>().ToMethod(ctx => () => new Bootstrapper().Kernel);
             kernel.Bind<IHttpModule>().To<HttpApplicationInitializationHttpModule>();
 
+            GlobalConfiguration.Configuration.DependencyResolver = new NinjectResolver(kernel);
             GlobalHost.DependencyResolver = new NinjectSignalRDependencyResolver(kernel);
 
             RegisterServices(kernel);
@@ -80,6 +84,14 @@ namespace Warlords.Server.App_Start
             kernel.Bind<IEventStore>().To<EventStore>().InSingletonScope();
             kernel.Bind<IClientSender>().To<SignalRClientSender>();
             kernel.Bind<IEventScheduler>().To<AsyncEventScheduler>().InSingletonScope();
+            kernel.Bind<IDocumentStore>()
+                .ToMethod(_ =>
+                {
+                    var store = new DocumentStore {ConnectionStringName = "WarlordsDB"};
+                    store.Initialize();
+                    return store;
+                })
+                .InSingletonScope();
         }        
     }
 }
