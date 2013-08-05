@@ -25,13 +25,13 @@ namespace Warlords.Server.Domain.Models.Lobby
 
         public Lobby(Guid id)
         {
-            ApplyChange(new LobbyCreatedEvent { Guid = id});
+            ApplyChange(new LobbyCreatedEvent { LobbyGuid = id});
         }
 
         public void Apply(LobbyCreatedEvent @event)
         {
             Contract.Requires(@event != null);
-            _id = @event.Guid;
+            _id = @event.LobbyGuid;
         }
 
         [Pure]

@@ -8,6 +8,6 @@ namespace Warlords.Server.Application.Infrastructure
     {
         void Save(AggregateRoot aggregate, int expectedVersion);
         T GetById(Guid id);
-        IEnumerable<Guid> GetAllIds();
+        //IEnumerable<LobbyGuid> GetAllIds();
     }
 }

@@ -46,6 +46,14 @@ namespace Warlords.Server
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             logger.Debug("Bundles configuration ended");
 
+            logger.Debug("Started creating RavenDB indexes");
+            RavenDBInitialization.InitializeIndexes();
+            logger.Debug("Finished creating RavenDB indexes");
+
+            logger.Debug("Started registering handlers");
+            HandlerRegistration.RegisterHandlers();
+            logger.Debug("Finished registering handlers");
+
             logger.Debug("Started executing startup commands");
             StartCommands.PublishStartCommands();
             logger.Debug("Finished executing startup commands");

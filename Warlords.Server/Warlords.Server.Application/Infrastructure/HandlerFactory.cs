@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.Contracts;
 using System.Reflection;
+using log4net;
 using Ninject;
 using System;
 using System.Collections.Generic;
@@ -12,15 +13,15 @@ namespace Warlords.Server.Application.Infrastructure
     {
         private readonly Dictionary<Type, IList<Action<Message>>> _handlers;
         private readonly IKernel _kernel;
-        private readonly IList<Action<Message>> _generalHandlers; 
+        private readonly IList<Action<Message>> _generalHandlers;
+
+        private static readonly ILog _logger = LogManager.GetLogger(typeof (HandlerFactory));
  
         public HandlerFactory(IKernel kernel)
         {
             _kernel = kernel;
             _handlers = new Dictionary<Type, IList<Action<Message>>>();
             _generalHandlers = new List<Action<Message>>();
-
-            SearchForHandlers();
         }
 
         public void AddSubsriber(Type messageType, Action<Message> action)
@@ -42,9 +43,9 @@ namespace Warlords.Server.Application.Infrastructure
             _generalHandlers.Add(action);
         }
 
-        private void SearchForHandlers()
+        public void AddHandlersLocatedInAssembly(Assembly assembly)
         {
-            var concreteTypes = GetTypesImplementingIHandles();
+            var concreteTypes = GetTypesImplementingIHandles(assembly);
 
             foreach (var handlerType in concreteTypes)
             {
@@ -64,6 +65,8 @@ namespace Warlords.Server.Application.Infrastructure
                         MethodInfo method = handler.GetType().GetMethod("Handle", new[] { tempMessageType });
                         method.Invoke(handler, new object[] { message });
                     });
+
+                    _logger.Debug(string.Format("Added handler of type {0} for message type {1}", handlerType, messageType));
                 }
             }
         }
@@ -74,9 +77,8 @@ namespace Warlords.Server.Application.Infrastructure
             return type.GetInterface("IHandles`1").GetGenericArguments();
         }
 
-        private IEnumerable<Type> GetTypesImplementingIHandles()
+        private IEnumerable<Type> GetTypesImplementingIHandles(Assembly assembly)
         {
-            var assembly = typeof (IHandles<>).Assembly;
             var types = assembly.GetTypes();
             var concreteTypes =
                 types.Where(

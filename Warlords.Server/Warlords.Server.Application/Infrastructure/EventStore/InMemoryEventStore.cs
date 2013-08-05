@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics.Contracts;
 using System.Linq;
+using Warlords.Server.Application.Infrastructure.Exceptions;
 using Warlords.Server.Domain.Infrastructure;
 
-namespace Warlords.Server.Application.Infrastructure
+namespace Warlords.Server.Application.Infrastructure.EventStore
 {
-    public class EventStore : IEventStore
+    public class InMemoryEventStore : IEventStore
     {
         private class AggregateStore : Dictionary<Guid, List<Event>>
         {
@@ -15,7 +16,7 @@ namespace Warlords.Server.Application.Infrastructure
 
         private readonly IHubService _publisher;
 
-        public EventStore(IHubService publisher)
+        public InMemoryEventStore(IHubService publisher)
         {
             _publisher = publisher;
         }
@@ -102,19 +103,5 @@ namespace Warlords.Server.Application.Infrastructure
 
             return _current[aggregateType].Keys;
         }
-    }
-
-    public class AggregateNotFoundException : Exception
-    {
-        public Guid AggregateId { get; set; }
-        public Type AggregateType { get; set; }
-    }
-
-    public class ConcurrencyException : Exception
-    {
-        public Guid AggregateId { get; set; }
-        public Type AggregateType { get; set; }
-        public int ActualMaxVersion { get; set; }
-        public int ExpectedMaxVersion { get; set; }
     }
 }

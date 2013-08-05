@@ -8,6 +8,5 @@ namespace Warlords.Server.Application.Infrastructure
     {
         void SaveEvents<TAggregate>(Guid aggregateId, IEnumerable<Event> events, int expectedMaxVersion);
         List<Event> GetEventsForAggregate<TAggregate>(Guid aggregateId);
-        IEnumerable<Guid> GetAllIdsForAggregate<TAggregate>();
     }
 }

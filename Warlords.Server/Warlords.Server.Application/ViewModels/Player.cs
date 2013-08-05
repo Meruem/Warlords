@@ -1,4 +1,4 @@
-﻿namespace Warlords.Server.ViewModels
+﻿namespace Warlords.Server.Application.ViewModels
 {
     public class Player
     {

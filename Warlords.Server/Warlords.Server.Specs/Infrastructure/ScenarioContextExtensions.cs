@@ -24,16 +24,16 @@ namespace Warlords.Server.Specs.Infrastructure
 
         public static IEventStore EventStore(this ScenarioContext context)
         {
-            Contract.Requires(context.ContainsKey("EventStore"), "EventStore not initialized.");
-            var result = context["EventStore"] as IEventStore;
-            Contract.Assert(result != null, "EventStore not initialized.");
+            Contract.Requires(context.ContainsKey("InMemoryEventStore"), "InMemoryEventStore not initialized.");
+            var result = context["InMemoryEventStore"] as IEventStore;
+            Contract.Assert(result != null, "InMemoryEventStore not initialized.");
             return result;
         }
 
         public static void SetEventStore(this ScenarioContext context, IEventStore eventStore)
         {
             Contract.Requires(eventStore != null);
-            context["EventStore"] = eventStore;
+            context["InMemoryEventStore"] = eventStore;
         }
 
         public static List<string> CalledMethods(this ScenarioContext context)

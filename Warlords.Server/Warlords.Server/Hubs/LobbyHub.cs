@@ -3,7 +3,9 @@ using System.Linq;
 using Microsoft.AspNet.SignalR;
 using System.Collections.Generic;
 using Ninject;
+using Raven.Client;
 using Warlords.Server.Application.Infrastructure;
+using Warlords.Server.Application.ViewModels;
 using Warlords.Server.Domain.Models.Lobby;
 using Warlords.Server.Infrastructure;
 
@@ -12,24 +14,15 @@ namespace Warlords.Server.Hubs
     public class LobbyHub : WarlordsHub
     {
         [Inject]
-        public IRepository<Lobby> Repository { get; set; }
+        public IDocumentStore Store { get; set; }
 
         [Authorize]
         public IEnumerable<string> GetAllPlayers()
         {
-            var lobbyId = Repository.GetAllIds().FirstOrDefault();
-
-            // hack :(
-            //Contract.Assert(lobbyId != null, "No lobby exists");
-
-            if (lobbyId == default(Guid))
+            using (var session = Store.OpenSession())
             {
-                return null;
+                return session.Query<Player>().Select(p => p.Name).ToList();
             }
-
-            var lobby = Repository.GetById(lobbyId);
-
-            return lobby.Players;
         }
 
         [Authorize]
@@ -40,7 +33,7 @@ namespace Warlords.Server.Hubs
             //// hack :(
             ////Contract.Assert(lobbyId != null, "No lobby exists");
 
-            //if (lobbyId == default(Guid))
+            //if (lobbyId == default(LobbyGuid))
             //{
             //    var newLobby = new Lobby();
             //    Repository.Save(newLobby, -1);

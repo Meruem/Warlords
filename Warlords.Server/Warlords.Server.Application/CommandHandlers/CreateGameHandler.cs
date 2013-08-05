@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.Contracts;
+﻿using System;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using Warlords.Server.Application.Commands;
 using Warlords.Server.Application.Infrastructure;
@@ -19,7 +20,7 @@ namespace Warlords.Server.Application.CommandHandlers
         [Log]
         public void Handle(CreateGameMessage message)
         {
-            var lobbyId = _lobbyRepository.GetAllIds().FirstOrDefault();
+            Guid lobbyId = Guid.NewGuid();
             Contract.Assert(lobbyId != null, "No lobby exists");
 
             var lobby = _lobbyRepository.GetById(lobbyId);

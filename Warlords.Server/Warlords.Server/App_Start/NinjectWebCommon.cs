@@ -10,6 +10,7 @@ using System.Web;
 using Raven.Client;
 using Raven.Client.Document;
 using Warlords.Server.Application.Infrastructure;
+using Warlords.Server.Application.Infrastructure.EventStore;
 using Warlords.Server.Domain.Models.Game;
 using Warlords.Server.Domain.Models.Lobby;
 using Warlords.Server.Infrastructure;
@@ -81,7 +82,7 @@ namespace Warlords.Server.App_Start
             kernel.Rebind<GameRepository>().To<InMemoryGameRepository>().InSingletonScope();
             kernel.Bind<IHubService>().To<HubService>();
             kernel.Bind(typeof(IRepository<>)).To(typeof(Repository<>));
-            kernel.Bind<IEventStore>().To<EventStore>().InSingletonScope();
+            kernel.Bind<IEventStore>().To<RavenDBEventStore>().InSingletonScope();
             kernel.Bind<IClientSender>().To<SignalRClientSender>();
             kernel.Bind<IEventScheduler>().To<AsyncEventScheduler>().InSingletonScope();
             kernel.Bind<IDocumentStore>()

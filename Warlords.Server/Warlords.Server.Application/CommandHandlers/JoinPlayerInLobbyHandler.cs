@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
 using System.Linq;
+using Raven.Client;
 using Warlords.Server.Application.Commands;
 using Warlords.Server.Application.Infrastructure;
+using Warlords.Server.Application.ViewModels;
 using Warlords.Server.Common.Aspects;
 using Warlords.Server.Domain.Models.Lobby;
 
@@ -11,16 +13,24 @@ namespace Warlords.Server.Application.CommandHandlers
     public class JoinPlayerInLobbyHandler : IHandles<JoinPlayerInLobbyMessage>
     {
         private readonly IRepository<Lobby> _lobbyRepository;
+        private readonly IDocumentStore _store;
 
-        public JoinPlayerInLobbyHandler(IRepository<Lobby> lobbyRepository)
+        public JoinPlayerInLobbyHandler(IRepository<Lobby> lobbyRepository, IDocumentStore store)
         {
             _lobbyRepository = lobbyRepository;
+            _store = store;
         }
 
         [Log]
         public void Handle(JoinPlayerInLobbyMessage message)
         {
-            var lobbyId = _lobbyRepository.GetAllIds().FirstOrDefault();
+            Guid lobbyId;
+            using (var session = _store.OpenSession())
+            {
+                var currentlobby = session.Load<CurrentLobby>("/CurrentLobby/1");
+                Contract.Assert(currentlobby != null, "No lobby exists");
+                lobbyId = currentlobby.LobbyId;
+            }
 
             Contract.Assert(lobbyId != null, "No lobby exists");
 

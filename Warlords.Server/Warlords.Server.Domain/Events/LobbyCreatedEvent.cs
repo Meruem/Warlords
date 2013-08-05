@@ -5,6 +5,6 @@ namespace Warlords.Server.Domain.Events
 {
     public class LobbyCreatedEvent : Event
     {
-        public Guid Guid { get; set; }
+        public Guid LobbyGuid { get; set; }
     }
 }

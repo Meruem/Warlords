@@ -36,9 +36,9 @@ namespace Warlords.Server.Application.Infrastructure
             return obj;
         }
 
-        public IEnumerable<Guid> GetAllIds()
-        {
-            return _storage.GetAllIdsForAggregate<T>();
-        }
+        //public IEnumerable<LobbyGuid> GetAllIds()
+        //{
+        //    return _storage.GetAllIdsForAggregate<T>();
+        //}
     }
 }

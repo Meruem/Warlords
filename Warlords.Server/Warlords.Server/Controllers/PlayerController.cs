@@ -2,8 +2,8 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Raven.Client;
+using Warlords.Server.Application.ViewModels;
 using Warlords.Server.Infrastructure;
-using Warlords.Server.ViewModels;
 
 namespace Warlords.Server.Controllers
 {
