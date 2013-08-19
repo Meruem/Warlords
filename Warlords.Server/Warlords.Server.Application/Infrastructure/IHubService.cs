@@ -1,6 +1,6 @@
 ﻿using System;
 using Warlords.Server.Common;
-using Warlords.Server.Domain.Infrastructure;
+using Warlords.Server.DomainF.Events;
 
 namespace Warlords.Server.Application.Infrastructure
 {

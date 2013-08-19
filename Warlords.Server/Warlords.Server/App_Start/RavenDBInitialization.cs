@@ -1,8 +1,9 @@
 ﻿using System.Diagnostics.Contracts;
 using Microsoft.AspNet.SignalR;
+using Raven.Abstractions.Data;
 using Raven.Client;
 using Raven.Client.Indexes;
-using Warlords.Server.Application.ViewModels.Indexes;
+using AllPlayersIndex = Warlords.Server.DB.AllPlayersIndex;
 
 namespace Warlords.Server.App_Start
 {
@@ -14,6 +15,12 @@ namespace Warlords.Server.App_Start
             Contract.Assert(documentStore != null);
 
             IndexCreation.CreateIndexes(typeof (AllPlayersIndex).Assembly, documentStore);
+
+            using (var session = documentStore.OpenSession())
+            {
+                session.Advanced.DocumentStore.DatabaseCommands.DeleteByIndex("AllPlayersIndex", new IndexQuery());
+                session.SaveChanges();
+            }
         }
     }
 }

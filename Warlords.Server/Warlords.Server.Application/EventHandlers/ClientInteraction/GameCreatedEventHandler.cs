@@ -1,7 +1,7 @@
 ﻿using Ninject;
 using Warlords.Server.Application.Infrastructure;
 using Warlords.Server.Common.Aspects;
-using Warlords.Server.Domain.Events;
+using Warlords.Server.DomainF.Events;
 
 namespace Warlords.Server.Application.EventHandlers.ClientInteraction
 {

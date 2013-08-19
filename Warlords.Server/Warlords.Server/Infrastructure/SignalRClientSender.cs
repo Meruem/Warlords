@@ -1,24 +1,20 @@
-﻿using System;
-using Microsoft.AspNet.SignalR;
-using Warlords.Server.Application.Infrastructure;
+﻿using Microsoft.AspNet.SignalR;
+using Warlords.Server.Common;
 
 namespace Warlords.Server.Infrastructure
 {
     public class SignalRClientSender : IClientSender
     {
-        public void SendToAllClients(string hubName, Action<dynamic> action)
+        public void SendToAllClients(object message)
         {
-            var context = GlobalHost.ConnectionManager.GetHubContext(hubName);
-            var clients = context.Clients.All;
-            action.Invoke(clients);
+            var context = GlobalHost.ConnectionManager.GetHubContext("MessageHub");
+            context.Clients.All.handleMessage(message.GetType().Name, message);
         }
 
-        public void SendToClient(string connectionId, string hubName, Action<dynamic> action)
+        public void SendToClient(string connectionId, object message)
         {
-            var context = GlobalHost.ConnectionManager.GetHubContext(hubName);
-
-            var client = context.Clients.Client(connectionId);
-            action.Invoke(client);
+            var context = GlobalHost.ConnectionManager.GetHubContext("MessageHub");
+            context.Clients.Client(connectionId).handleMessage(message.GetType().Name, message);
         }
     }
 }

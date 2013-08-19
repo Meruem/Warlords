@@ -1,11 +1,8 @@
-﻿using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using TechTalk.SpecFlow;
 using Warlords.Server.Application.Commands;
-using Warlords.Server.Domain.Events;
 using Warlords.Server.Specs.Infrastructure;
-using models = Warlords.Server.Domain.Models;
 
 namespace Warlords.Server.Specs.Lobby
 {

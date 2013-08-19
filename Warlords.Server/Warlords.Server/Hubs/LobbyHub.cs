@@ -1,12 +1,9 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using Microsoft.AspNet.SignalR;
 using System.Collections.Generic;
 using Ninject;
 using Raven.Client;
-using Warlords.Server.Application.Infrastructure;
-using Warlords.Server.Application.ViewModels;
-using Warlords.Server.Domain.Models.Lobby;
+using Warlords.Server.ApplicationF;
 using Warlords.Server.Infrastructure;
 
 namespace Warlords.Server.Hubs
@@ -17,33 +14,33 @@ namespace Warlords.Server.Hubs
         public IDocumentStore Store { get; set; }
 
         [Authorize]
-        public IEnumerable<string> GetAllPlayers()
+        public IEnumerable<Player> GetAllPlayers()
         {
             using (var session = Store.OpenSession())
             {
-                return session.Query<Player>().Select(p => p.Name).ToList();
+                return session.Query<Player>().ToList();
             }
         }
 
-        [Authorize]
-        public IEnumerable<LobbyGameInfo> GetAllGames()
-        {
-            //var lobbyId = Repository.GetAllIds().FirstOrDefault();
+        //[Authorize]
+        //public IEnumerable<LobbyGameInfo> GetAllGames()
+        //{
+        //    //var lobbyId = Repository.GetAllIds().FirstOrDefault();
 
-            //// hack :(
-            ////Contract.Assert(lobbyId != null, "No lobby exists");
+        //    //// hack :(
+        //    ////Contract.Assert(lobbyId != null, "No lobby exists");
 
-            //if (lobbyId == default(LobbyGuid))
-            //{
-            //    var newLobby = new Lobby();
-            //    Repository.Save(newLobby, -1);
-            //}
+        //    //if (lobbyId == default(LobbyGuid))
+        //    //{
+        //    //    var newLobby = new Lobby();
+        //    //    Repository.Save(newLobby, -1);
+        //    //}
 
-            //var lobby = Repository.GetById(lobbyId);
+        //    //var lobby = Repository.GetById(lobbyId);
 
-            //return lobby.Games;
-            return null;
-        }
+        //    //return lobby.Games;
+        //    return null;
+        //}
 
         //[Authorize]
         //public LobbyGameInfo CreateGame()

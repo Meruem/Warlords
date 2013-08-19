@@ -68,8 +68,14 @@ function MainController($scope, $location, currentGameService) {
         $scope.$apply($scope.games.push(message.Game));
     };
 
-    messageHub.client.playerJoined = function (player) {
-        $scope.$apply($scope.players.push(player));
+    //messageHub.client.playerJoined = function (player) {
+    //    $scope.$apply($scope.players.push(player));
+    //};
+
+    messageHub.client.handleMessage = function(messageType, message) {
+        if (messageType == "PlayerJoinedMessage") {
+            $scope.$apply($scope.players.push({ Name : message.Name }));
+        }
     };
 
     lobby.client.gameRemoved = function (gameId) {
@@ -104,31 +110,34 @@ function MainController($scope, $location, currentGameService) {
 
     $.connection.hub.start().done(function () {
         //lobby.server.joinLobby()
-        messageHub.server.handleMessage('JoinPlayerInLobbyMessage', '{}')
-            .done(function () {
+
+        // load list of all Owners in lobby
+        lobby.server.getAllPlayers()
+            .done(function (players) {
+                $scope.$apply($scope.players = players);
+                messageHub.server.handleMessage('JoinPlayerInLobbyCommand', '{}');
+            });
+        
+        //messageHub.server.handleMessage('JoinPlayerInLobbyCommand', '{}')
+        //    .done(function () {
                 // After joining lobby
 
-                // load list of all Owners in lobby
-                lobby.server.getAllPlayers()
-                    .done(function (players) {
-                        $scope.$apply($scope.players = players);
-                    });
 
-                // load list of all active games
-                lobby.server.getAllGames()
-                    .done(function (games) {
+                //// load list of all active games
+                //lobby.server.getAllGames()
+                //    .done(function (games) {
 
-                        // check that the current Owner already is in any of these games
-                        for (var i = 0; i < games.length; i++) {
-                            if (Enumerable.from(games[i].Players).any("$.Name == currentUserName")) {
-                                setCurrentGame(games[i]);
-                                break;
-                            }
-                        }
+                //        // check that the current Owner already is in any of these games
+                //        for (var i = 0; i < games.length; i++) {
+                //            if (Enumerable.from(games[i].Players).any("$.Name == currentUserName")) {
+                //                setCurrentGame(games[i]);
+                //                break;
+                //            }
+                //        }
 
-                        $scope.$apply($scope.games = games);
-                    });
-            });
+                //        $scope.$apply($scope.games = games);
+                //    });
+            //});
     });
 };
 

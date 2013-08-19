@@ -1,4 +1,5 @@
 ﻿using Warlords.Server.Domain.Infrastructure;
+using Warlords.Server.DomainF.Events;
 
 namespace Warlords.Server.Domain.Events
 {

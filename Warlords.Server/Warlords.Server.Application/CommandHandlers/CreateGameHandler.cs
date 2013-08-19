@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
-using System.Linq;
 using Warlords.Server.Application.Commands;
 using Warlords.Server.Application.Infrastructure;
 using Warlords.Server.Common.Aspects;
-using Warlords.Server.Domain.Models.Lobby;
+using Warlords.Server.DomainF;
 
 namespace Warlords.Server.Application.CommandHandlers
 {
@@ -26,7 +25,7 @@ namespace Warlords.Server.Application.CommandHandlers
             var lobby = _lobbyRepository.GetById(lobbyId);
             var expectedVersion = lobby.Version;
 
-            lobby.CreateGame(message.UserName);
+            //lobby.CreateGame(message.UserName);
 
             _lobbyRepository.Save(lobby, expectedVersion);
         }

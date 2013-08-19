@@ -4,7 +4,8 @@ using System.Collections.ObjectModel;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using Warlords.Server.Application.Infrastructure.Exceptions;
-using Warlords.Server.Domain.Infrastructure;
+using Warlords.Server.ApplicationF;
+using Warlords.Server.DomainF.Events;
 
 namespace Warlords.Server.Application.Infrastructure.EventStore
 {
@@ -14,18 +15,10 @@ namespace Warlords.Server.Application.Infrastructure.EventStore
         {
         }
 
-        private readonly IHubService _publisher;
+        private readonly Dictionary<string, AggregateStore> _current = new Dictionary<string, AggregateStore>();
 
-        public InMemoryEventStore(IHubService publisher)
+        public IEnumerable<Event> SaveEvents(string aggregateType, Guid aggregateId, int expectedMaxVersion, IEnumerable<Event> events)
         {
-            _publisher = publisher;
-        }
-
-        private readonly Dictionary<Type, AggregateStore> _current = new Dictionary<Type, AggregateStore>();
-
-        public void SaveEvents<TAggregate>(Guid aggregateId, IEnumerable<Event> events, int expectedMaxVersion)
-        {
-            var aggregateType = typeof (TAggregate);
             List<Event> storedEvents;
             if (!_current.ContainsKey(aggregateType))
             {
@@ -44,40 +37,38 @@ namespace Warlords.Server.Application.Infrastructure.EventStore
                 storedEvents = aggregateStore[aggregateId];
                 CheckForConcurrencyConflict(aggregateId, expectedMaxVersion, storedEvents, aggregateType);
             }
-            var i = expectedMaxVersion;
-            foreach (var @event in events)
+            var saveEvents = events as IList<Event> ?? events.ToList();
+            foreach (var @event in saveEvents)
             {
-                i++;
-                @event.Version = i;
                 storedEvents.Add(@event);
-                _publisher.Publish(@event);
             }
+
+            return saveEvents;
         }
 
         private void CheckForConcurrencyConflict(Guid aggregateId, int expectedMaxVersion, List<Event> eventDescriptors,
-                                                             Type aggregateType)
+                                                             string aggregateType)
         {
-            Contract.Requires(eventDescriptors != null);
-            var eventCount = eventDescriptors.Count;
-            if (eventCount > 0)
-            {
-                var actualMaxVersion = eventDescriptors[eventCount - 1].Version;
-                if (actualMaxVersion != expectedMaxVersion && expectedMaxVersion != -1)
-                {
-                    throw new ConcurrencyException
-                        {
-                            AggregateId = aggregateId,
-                            AggregateType = aggregateType,
-                            ActualMaxVersion = actualMaxVersion,
-                            ExpectedMaxVersion = expectedMaxVersion
-                        };
-                }
-            }
+            //Contract.Requires(eventDescriptors != null);
+            //var eventCount = eventDescriptors.Count;
+            //if (eventCount > 0)
+            //{
+            //    var actualMaxVersion = eventDescriptors[eventCount - 1].Version;
+            //    if (actualMaxVersion != expectedMaxVersion && expectedMaxVersion != -1)
+            //    {
+            //        throw new ConcurrencyException
+            //            {
+            //                AggregateId = aggregateId,
+            //                AggregateType = aggregateType,
+            //                ActualMaxVersion = actualMaxVersion,
+            //                ExpectedMaxVersion = expectedMaxVersion
+            //            };
+            //    }
+            //}
         }
 
-        public List<Event> GetEventsForAggregate<TAggregate>(Guid aggregateId)
+        public IEnumerable<Event> GetEventsForAggregate(string aggregateType, Guid aggregateId)
         {
-            var aggregateType = typeof (TAggregate);
             if (!_current.ContainsKey(aggregateType))
             {
                 throw new AggregateNotFoundException { AggregateId = aggregateId, AggregateType = aggregateType };
@@ -93,9 +84,8 @@ namespace Warlords.Server.Application.Infrastructure.EventStore
             return store[aggregateId].ToList();
         }
 
-        public IEnumerable<Guid> GetAllIdsForAggregate<TAggregate>()
+        public IEnumerable<Guid> GetAllIdsForAggregate(string aggregateType)
         {
-            var aggregateType = typeof (TAggregate);
             if (!_current.ContainsKey(aggregateType))
             {
                 return new Collection<Guid>();

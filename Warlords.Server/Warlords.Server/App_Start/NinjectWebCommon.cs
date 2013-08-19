@@ -9,10 +9,9 @@ using System.Diagnostics.Contracts;
 using System.Web;
 using Raven.Client;
 using Raven.Client.Document;
-using Warlords.Server.Application.Infrastructure;
-using Warlords.Server.Application.Infrastructure.EventStore;
-using Warlords.Server.Domain.Models.Game;
-using Warlords.Server.Domain.Models.Lobby;
+using Warlords.Server.ApplicationF;
+using Warlords.Server.Common;
+using Warlords.Server.DB;
 using Warlords.Server.Infrastructure;
 
 
@@ -76,15 +75,8 @@ namespace Warlords.Server.App_Start
         {
             Contract.Requires(kernel != null);
 
-            kernel.Bind<IHandlerFactory>().To<HandlerFactory>().InSingletonScope();
-
-            kernel.Rebind<Lobby>().To<Lobby>().InSingletonScope();
-            kernel.Rebind<GameRepository>().To<InMemoryGameRepository>().InSingletonScope();
-            kernel.Bind<IHubService>().To<HubService>();
-            kernel.Bind(typeof(IRepository<>)).To(typeof(Repository<>));
-            kernel.Bind<IEventStore>().To<RavenDBEventStore>().InSingletonScope();
+            kernel.Bind<IHubService>().To<HubService>().InSingletonScope();
             kernel.Bind<IClientSender>().To<SignalRClientSender>();
-            kernel.Bind<IEventScheduler>().To<AsyncEventScheduler>().InSingletonScope();
             kernel.Bind<IDocumentStore>()
                 .ToMethod(_ =>
                 {

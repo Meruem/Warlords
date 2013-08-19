@@ -2,7 +2,7 @@
 using Raven.Client.Indexes;
 using Warlords.Server.ApplicationF;
 
-namespace Warlords.Server.Application.ViewModels.Indexes
+namespace Warlords.Server.DB
 {
     public class AllPlayersIndex : AbstractIndexCreationTask<Player>
     {

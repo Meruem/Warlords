@@ -1,7 +1,7 @@
 ﻿using Raven.Abstractions.Data;
 using Raven.Client;
 using Warlords.Server.Application.Infrastructure;
-using Warlords.Server.Domain.Events;
+using Warlords.Server.DomainF.Events;
 
 namespace Warlords.Server.Application.ViewModels.Handlers
 {

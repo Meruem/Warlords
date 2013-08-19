@@ -1,13 +1,11 @@
-﻿using System;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Controllers;
 using Ninject;
 using Raven.Client;
-using Raven.Client.Document;
-using Warlords.Server.Application.Infrastructure;
+using Warlords.Server.ApplicationF;
 
 namespace Warlords.Server.Infrastructure
 {
@@ -17,7 +15,7 @@ namespace Warlords.Server.Infrastructure
         public IDocumentStore Store { get; set; }
 
         [Inject]
-        public IHubService  Service { get; set; }
+        public IHubService Service { get; set; }
 
         public IAsyncDocumentSession Session { get; set; }
 

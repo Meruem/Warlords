@@ -2,19 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using Raven.Client;
-using Warlords.Server.Domain.Infrastructure;
+using Warlords.Server.ApplicationF;
+using Warlords.Server.DomainF.Events;
 
 namespace Warlords.Server.Application.Infrastructure.EventStore
 {
     public class RavenDBEventStore : IEventStore
     {
         private readonly IDocumentStore _store;
-        private readonly IHubService _publisher;
 
-        public RavenDBEventStore(IDocumentStore store, IHubService publisher)
+        public RavenDBEventStore(IDocumentStore store)
         {
             _store = store;
-            _publisher = publisher;
         }
 
         public class RavenEvent
@@ -24,47 +23,34 @@ namespace Warlords.Server.Application.Infrastructure.EventStore
             public Event Event { get; set; }
         }
 
-        public void SaveEvents<TAggregate>(Guid aggregateId, IEnumerable<Event> events, int expectedMaxVersion)
+        public IEnumerable<Event> SaveEvents(string aggregateType, Guid aggregateId, int expectedMaxVersion, IEnumerable<Event> events)
         {
             using (var session = _store.OpenSession())
             {
-                var aggregateType = typeof(TAggregate);
-
-                var i = expectedMaxVersion; 
-                foreach (var @event in events)
+                var saveEvents = events as IList<Event> ?? events.ToList();
+                foreach (var @event in saveEvents)
                 {
-                    i++;
-                    @event.Version = i;
-
                     session.Store(new RavenEvent
                     {
-                        AggregateType = aggregateType.Name,
+                        AggregateType = aggregateType,
                         AggregateId = aggregateId,
                         Event = @event
                     });
 
                     session.SaveChanges();
-                    _publisher.Publish(@event);
                 }
+
+                return saveEvents;
             }
         }
 
-        public List<Event> GetEventsForAggregate<TAggregate>(Guid aggregateId)
+        public IEnumerable<Event> GetEventsForAggregate(string aggregateType, Guid aggregateId)
         {
             using (var session = _store.OpenSession())
             {
-                var aggregateTypeName = typeof(TAggregate).Name;
-                var ravenEventList = session.Query<RavenEvent>().Where(e => e.AggregateType == aggregateTypeName && e.AggregateId == aggregateId).Select(e => e.Event).ToList();
+                var ravenEventList = session.Query<RavenEvent>().Where(e => e.AggregateType == aggregateType && e.AggregateId == aggregateId).Select(e => e.Event).ToList();
                 return ravenEventList;
             }
         }
-
-        //public IEnumerable<LobbyGuid> GetAllIdsForAggregate<TAggregate>()
-        //{
-        //    using (var session = _store.OpenSession())
-        //    {
-        //        return session.Query<RavenEvent>().Select(e => e.AggregateId).Distinct().ToList();
-        //    }
-        //}
     }
 }

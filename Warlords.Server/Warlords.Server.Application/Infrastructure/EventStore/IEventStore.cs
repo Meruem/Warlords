@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using Warlords.Server.Domain.Infrastructure;
+using Warlords.Server.DomainF.Events;
 
 namespace Warlords.Server.Application.Infrastructure
 {
     public interface IEventStore
     {
-        void SaveEvents<TAggregate>(Guid aggregateId, IEnumerable<Event> events, int expectedMaxVersion);
-        List<Event> GetEventsForAggregate<TAggregate>(Guid aggregateId);
+        void SaveEvents(string aggregateType, Guid aggregateId, IEnumerable<Event> events, int expectedMaxVersion);
+        List<Event> GetEventsForAggregate(string aggregateType, Guid aggregateId);
     }
 }

@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.Diagnostics.Contracts;
 using System.Linq;
-using Warlords.Server.Application.Infrastructure;
+using Warlords.Server.ApplicationF;
 using Warlords.Server.Common;
 using Warlords.Server.Common.Aspects;
 
@@ -26,13 +26,13 @@ namespace Warlords.Server.Hubs
             {
                 var messageObject = CreateMessageObject(message, type);
                 InjectUserSpecificInformationToMessage(messageObject);
-                _hubService.Send(type, messageObject);
+                _hubService.Send(messageObject);
             }
         }
 
         private static Type GetDotNetMessageType(string messageType)
         {
-            var type = typeof(IHandles<>).Assembly.GetTypes().FirstOrDefault(t => t.Name == messageType);
+            var type = typeof(CreateLobbyCommand).Assembly.GetTypes().FirstOrDefault(t => t.Name == messageType);
             return type;
         }
 

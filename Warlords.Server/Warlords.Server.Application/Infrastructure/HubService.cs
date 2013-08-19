@@ -2,7 +2,7 @@
 using System.Diagnostics.Contracts;
 using Warlords.Server.Common;
 using Warlords.Server.Common.Aspects;
-using Warlords.Server.Domain.Infrastructure;
+using Warlords.Server.DomainF.Events;
 
 namespace Warlords.Server.Application.Infrastructure
 {

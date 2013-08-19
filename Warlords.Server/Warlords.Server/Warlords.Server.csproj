@@ -222,6 +222,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DB\AllPlayersIndex.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\HandlerRegistration.cs" />
@@ -463,17 +464,17 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Warlords.Server.Application\Warlords.Server.Application.csproj">
-      <Project>{a3902ef8-86b2-47cb-a72e-95457932a989}</Project>
-      <Name>Warlords.Server.Application</Name>
+    <ProjectReference Include="..\Warlords.Server.ApplicationF\Warlords.Server.ApplicationF.fsproj">
+      <Project>{d4d0ef61-5f16-4c33-b5ba-54d0ef3df138}</Project>
+      <Name>Warlords.Server.ApplicationF</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warlords.Server.Common\Warlords.Server.Common.csproj">
       <Project>{2bacaf05-8d46-423f-92e4-5c4ffe02b621}</Project>
       <Name>Warlords.Server.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Warlords.Server.Domain\Warlords.Server.Domain.csproj">
-      <Project>{f2901eb7-17b4-42ab-afeb-bca9e9bf5fac}</Project>
-      <Name>Warlords.Server.Domain</Name>
+    <ProjectReference Include="..\Warlords.Server.DomainF\Warlords.Server.DomainF.fsproj">
+      <Project>{3ac5afe4-4d25-4d9e-ab37-8f6a1fdf8173}</Project>
+      <Name>Warlords.Server.DomainF</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

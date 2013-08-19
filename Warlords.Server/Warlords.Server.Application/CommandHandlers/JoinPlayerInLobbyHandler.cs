@@ -1,23 +1,22 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
-using System.Linq;
 using Raven.Client;
 using Warlords.Server.Application.Commands;
 using Warlords.Server.Application.Infrastructure;
 using Warlords.Server.Application.ViewModels;
 using Warlords.Server.Common.Aspects;
-using Warlords.Server.Domain.Models.Lobby;
+using Warlords.Server.DomainF;
 
 namespace Warlords.Server.Application.CommandHandlers
 {
     public class JoinPlayerInLobbyHandler : IHandles<JoinPlayerInLobbyMessage>
     {
-        private readonly IRepository<Lobby> _lobbyRepository;
+        private readonly IEventStore _eventStore;
         private readonly IDocumentStore _store;
 
-        public JoinPlayerInLobbyHandler(IRepository<Lobby> lobbyRepository, IDocumentStore store)
+        public JoinPlayerInLobbyHandler(IEventStore eventStore, IDocumentStore store)
         {
-            _lobbyRepository = lobbyRepository;
+            _eventStore = eventStore;
             _store = store;
         }
 
@@ -34,21 +33,23 @@ namespace Warlords.Server.Application.CommandHandlers
 
             Contract.Assert(lobbyId != null, "No lobby exists");
 
-            var lobby = _lobbyRepository.GetById(lobbyId);
-            Contract.Assert(lobby != null);
-            var expectedVersion = lobby.Version;
+            var events = _eventStore.GetEventsForAggregate("Lobby", lobbyId);
+            var lobby = Lobby.replayLobby(events);
 
-            if (lobby.IsPlayerJoined(message.UserName))
-            {
+            Contract.Assert(lobby != null);
+            //var expectedVersion = lobby.Version;
+
+            //if (lobby.IsPlayerJoined(message.UserName))
+            //{
                 // player is already joined, just change the connection Id under which is his account recognized
                 // currently not working and probably not required at all
                 //lobby.RefreshPlayerConnectionId(message.UserName, message.ConnectionId);
-            }
-            else
-            {
-                lobby.JoinPlayer(message.UserName, message.ConnectionId);
-                _lobbyRepository.Save(lobby, expectedVersion);
-            }
+            //}
+            //else
+            //{
+                var newEvents = Lobby.joinPlayer(message.UserName, message.ConnectionId, lobby);
+                _eventStore.SaveEvents("Lobby", lobbyId, newEvents, -1);
+            //}
         }
     }
 }

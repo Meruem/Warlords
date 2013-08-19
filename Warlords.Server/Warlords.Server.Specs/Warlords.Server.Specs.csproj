@@ -115,10 +115,6 @@
       <Project>{2bacaf05-8d46-423f-92e4-5c4ffe02b621}</Project>
       <Name>Warlords.Server.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Warlords.Server.Domain\Warlords.Server.Domain.csproj">
-      <Project>{f2901eb7-17b4-42ab-afeb-bca9e9bf5fac}</Project>
-      <Name>Warlords.Server.Domain</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Warlords.Server\Warlords.Server.csproj">
       <Project>{a027ccf1-4af6-4f93-b6fb-a61b9c3ad3ed}</Project>
       <Name>Warlords.Server</Name>

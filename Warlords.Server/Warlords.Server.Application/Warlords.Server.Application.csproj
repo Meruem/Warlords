@@ -68,6 +68,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FSharp.Core, Version=4.3.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="log4net, Version=1.2.11.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
@@ -102,47 +103,32 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CommandHandlers\CreateLobbyHandler.cs" />
-    <Compile Include="Commands\CreateLobbyMessage.cs" />
-    <Compile Include="EventHandlers\ClientInteraction\GameCreatedEventHandler.cs" />
-    <Compile Include="EventHandlers\ClientInteraction\PlayerJoinedEventHandler.cs" />
-    <Compile Include="Infrastructure\AsyncEventScheduler.cs" />
-    <Compile Include="Infrastructure\EventStore\InMemoryEventStore.cs" />
-    <Compile Include="Infrastructure\EventStore\RavenDBEventStore.cs" />
+    <Compile Include="Infrastructure\EventStore\InMemoryEventStore.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Infrastructure\EventStore\RavenDBEventStore.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Infrastructure\Exceptions\AggregateNotFoundException.cs" />
     <Compile Include="Infrastructure\Exceptions\ConcurrencyException.cs" />
-    <Compile Include="Infrastructure\HandlerFactory.cs" />
-    <Compile Include="Infrastructure\HubService.cs" />
     <Compile Include="Infrastructure\IClientSender.cs" />
-    <Compile Include="Infrastructure\IEventScheduler.cs" />
-    <Compile Include="Infrastructure\EventStore\IEventStore.cs" />
-    <Compile Include="Infrastructure\IHandlerFactory.cs" />
-    <Compile Include="Infrastructure\IHandles.cs" />
-    <Compile Include="Infrastructure\IHubService.cs" />
-    <Compile Include="Infrastructure\IRepository.cs" />
-    <Compile Include="CommandHandlers\CreateGameHandler.cs" />
-    <Compile Include="CommandHandlers\JoinPlayerInLobbyHandler.cs" />
-    <Compile Include="Infrastructure\SyncEventScheduler.cs" />
-    <Compile Include="Commands\CreateGameMessage.cs" />
-    <Compile Include="Commands\JoinPlayerInLobbyMessage.cs" />
-    <Compile Include="OutMessages\GameCreatedMessage.cs" />
-    <Compile Include="OutMessages\PlayerJoinedMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Infrastructure\Repository.cs" />
-    <Compile Include="ViewModels\CurrentLobby.cs" />
-    <Compile Include="ViewModels\Handlers\LobbyCreatedHandler.cs" />
-    <Compile Include="ViewModels\Handlers\PlayerJoinedHandler.cs" />
-    <Compile Include="ViewModels\Indexes\AllPlayersIndex.cs" />
-    <Compile Include="ViewModels\Player.cs" />
+    <Compile Include="ViewModels\Indexes\AllPlayersIndex.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Warlords.Server.ApplicationF\Warlords.Server.ApplicationF.fsproj">
+      <Project>{d4d0ef61-5f16-4c33-b5ba-54d0ef3df138}</Project>
+      <Name>Warlords.Server.ApplicationF</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Warlords.Server.Common\Warlords.Server.Common.csproj">
       <Project>{2bacaf05-8d46-423f-92e4-5c4ffe02b621}</Project>
       <Name>Warlords.Server.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Warlords.Server.Domain\Warlords.Server.Domain.csproj">
-      <Project>{f2901eb7-17b4-42ab-afeb-bca9e9bf5fac}</Project>
-      <Name>Warlords.Server.Domain</Name>
+    <ProjectReference Include="..\Warlords.Server.DomainF\Warlords.Server.DomainF.fsproj">
+      <Project>{3ac5afe4-4d25-4d9e-ab37-8f6a1fdf8173}</Project>
+      <Name>Warlords.Server.DomainF</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

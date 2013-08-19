@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Raven.Client;
-using Warlords.Server.Application.ViewModels;
+using Warlords.Server.ApplicationF;
 using Warlords.Server.Infrastructure;
 
 namespace Warlords.Server.Controllers

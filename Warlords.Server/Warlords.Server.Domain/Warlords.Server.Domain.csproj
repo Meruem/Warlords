@@ -88,8 +88,6 @@
     <Compile Include="Events\GameCreatedEvent.cs" />
     <Compile Include="Events\LobbyCreatedEvent.cs" />
     <Compile Include="Events\PlayerJoinedEvent.cs" />
-    <Compile Include="Infrastructure\AggregateRoot.cs" />
-    <Compile Include="Infrastructure\Event.cs" />
     <Compile Include="Infrastructure\PrivateReflectionDynamicObject.cs" />
     <Compile Include="Models\Game\Battlefield.cs" />
     <Compile Include="Models\Game\Building.cs" />
@@ -105,7 +103,6 @@
     <Compile Include="Models\Game\MoveOrder.cs" />
     <Compile Include="Models\Game\Zone.cs" />
     <Compile Include="Models\Game\ZoneTypeEnum.cs" />
-    <Compile Include="Models\Lobby\Lobby.cs" />
     <Compile Include="Models\Lobby\LobbyGameInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -113,6 +110,10 @@
     <ProjectReference Include="..\Warlords.Server.Common\Warlords.Server.Common.csproj">
       <Project>{2bacaf05-8d46-423f-92e4-5c4ffe02b621}</Project>
       <Name>Warlords.Server.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warlords.Server.DomainF\Warlords.Server.DomainF.fsproj">
+      <Project>{3ac5afe4-4d25-4d9e-ab37-8f6a1fdf8173}</Project>
+      <Name>Warlords.Server.DomainF</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

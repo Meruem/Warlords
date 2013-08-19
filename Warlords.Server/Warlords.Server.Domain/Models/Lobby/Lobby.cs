@@ -4,14 +4,15 @@ using System.Diagnostics.Contracts;
 using System.Linq;
 using Warlords.Server.Domain.Events;
 using Warlords.Server.Domain.Infrastructure;
+using Warlords.Server.DomainF.AggregateRoot;
+using Warlords.Server.DomainF.Events;
+using LobbyCreatedEvent = Warlords.Server.Domain.Events.LobbyCreatedEvent;
+using PlayerJoinedEvent = Warlords.Server.Domain.Events.PlayerJoinedEvent;
 
 namespace Warlords.Server.Domain.Models.Lobby
 {
     public class Lobby : AggregateRoot
     {
-        private Guid _id;
-        public override Guid Id { get { return _id; } set { _id = value; } }
-
         private readonly IDictionary<string, LobbyGameInfo> _games = new Dictionary<string, LobbyGameInfo>();
         private readonly IList<string> _players = new List<string>();
 
@@ -20,10 +21,12 @@ namespace Warlords.Server.Domain.Models.Lobby
 
         // Required for creation through Repository<Lobby>
         public Lobby()
+            :base(null)
         {
         }
 
         public Lobby(Guid id)
+            : base(id)
         {
             ApplyChange(new LobbyCreatedEvent { LobbyGuid = id});
         }
@@ -31,7 +34,7 @@ namespace Warlords.Server.Domain.Models.Lobby
         public void Apply(LobbyCreatedEvent @event)
         {
             Contract.Requires(@event != null);
-            _id = @event.LobbyGuid;
+            Id = @event.LobbyGuid;
         }
 
         [Pure]
@@ -103,6 +106,11 @@ namespace Warlords.Server.Domain.Models.Lobby
         public LobbyGameInfo GetGamePlayedByPlayer(string playerName)
         {
             return _games.Values.FirstOrDefault(g => g.Players.Any(p => p == playerName));
+        }
+
+        public override void Apply(Event obj0)
+        {
+            throw new NotImplementedException();
         }
     }
 }
